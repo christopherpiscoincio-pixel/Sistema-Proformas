@@ -47,10 +47,9 @@ app.post('/api/proformas', (req, res) => {
     });
 });
 
-// Asegúrate de tener esta línea arriba del app.listen
-const PORT = process.env.PORT || 3000;
+// Quítale el "const" al inicio para que use la que ya estaba declarada arriba
+PORT = process.env.PORT || 3000; 
 
-// Arrancar el servidor
 app.listen(PORT, () => {
     console.log(`Servidor ejecutándose profesionalmente en el puerto ${PORT}`);
 });
