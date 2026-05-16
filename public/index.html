@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProformaFlow | Business Suite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Librerías para el PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <!-- HEADER -->
+        <div class="bento-card header-area">
+            <div>
+                <p style="color: var(--accent); margin: 0; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px;">BUSINESS SUITE</p>
+                <h1>Proforma<span style="color: var(--text-dim);">Flow</span></h1>
+            </div>
+            <input type="date" id="fecha-actual" style="background: rgba(0,0,0,0.4); border: none;">
+        </div>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <div class="main-content">
+            <!-- EMISOR -->
+            <div class="bento-card" style="border-left: 5px solid var(--accent);">
+                <h2><span class="step-num">01</span> DATOS DEL EMISOR (PROVEEDOR)</h2>
+                <div class="form-group">
+                    <div class="input-box">
+                        <label>Tu Empresa</label>
+                        <input type="text" id="emisor-nombre" placeholder="Nombre de tu negocio">
+                    </div>
+                    <div class="input-box">
+                        <label>Tu RUC</label>
+                        <input type="text" id="emisor-ruc" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="20XXXXXXXXX">
+                    </div>
+                </div>
+            </div>
+
+            <!-- CLIENTE -->
+            <div class="bento-card">
+                <h2><span class="step-num">02</span> DATOS DEL CLIENTE</h2>
+                <div class="form-group">
+                    <div class="input-box">
+                        <label>Cliente / Razón Social</label>
+                        <input type="text" id="cliente-nombre" placeholder="Nombre del cliente">
+                    </div>
+                    <div class="input-box">
+                        <label>RUC / DNI</label>
+                        <input type="text" id="cliente-id" maxlength="11" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="20XXXXXXXXX">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ITEMS -->
+            <div class="bento-card">
+                <h2><span class="step-num">03</span> DETALLES DEL SERVICIO</h2>
+                <div id="items-lista">
+                    <div class="item-row">
+                        <input type="text" placeholder="Descripción" class="item-desc">
+                        <input type="number" placeholder="Cant" class="item-qty" oninput="calcularTotales()">
+                        <input type="number" placeholder="Precio" class="item-price" oninput="calcularTotales()">
+                        <div class="item-total-display" style="font-weight: 800; text-align: right;">S/. 0.00</div>
+                        <button style="background:none; border:none; color:#ef4444; cursor:pointer; font-weight:800;" onclick="this.parentElement.remove(); calcularTotales()">✕</button>
+                    </div>
+                </div>
+                <button class="btn-add" onclick="agregarFila()">+ AGREGAR NUEVO ÍTEM</button>
+            </div>
+        </div>
+
+        <!-- SIDEBAR -->
+        <div class="bento-card summary-card">
+            <h2 style="color: white; font-size: 1.3rem;">RESUMEN</h2>
+            <div class="total-line">
+                <span>Subtotal Bruto</span>
+                <span id="subtotal" style="color: white;">S/. 0.00</span>
+            </div>
+            <div class="total-line">
+                <span>Impuestos (IGV 18%)</span>
+                <span id="igv" style="color: white;">S/. 0.00</span>
+            </div>
+            <div class="grand-total">
+                <span style="font-size: 0.8rem; display: block; color: var(--text-dim);">TOTAL A PAGAR</span>
+                <span id="total-final">S/. 0.00</span>
+            </div>
+
+            <div class="input-box" style="margin-top: 30px;">
+                <label>Vigencia de Proforma</label>
+                <select id="validez">
+                    <option value="5 días hábiles">5 días hábiles</option>
+                    <option value="15 días hábiles">15 días hábiles</option>
+                    <option value="30 días hábiles">30 días hábiles</option>
+                </select>
+            </div>
+
+            <button class="btn-generate" onclick="procesarProforma()">GENERAR DOCUMENTO</button>
+        </div>
+    </div>
+    <div id="toast-container"></div>
+    <!-- Scripts de modularización -->
+    <script src="js/main.js"></script>
+    <script src="js/pdf-gen.js"></script>
+</body>
+</html>
