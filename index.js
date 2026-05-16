@@ -3,7 +3,9 @@ const sqlite3 = require('sqlite3').verbose();
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+
+// Configuración del puerto dinámico para Render y local
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
@@ -35,9 +37,7 @@ db.serialize(() => {
 // Ruta para guardar una proforma en el historial
 app.post('/api/proformas', (req, res) => {
     const { emisor, emisorRuc, cliente, clienteId, fecha, validez, subtotal, igv, total } = req.body;
-
-    const query = `INSERT INTO proformas (emisor_nombre, emisor_ruc, cliente_nombre, cliente_ruc, fecha, validez, subtotal, igv, total) 
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    const query = `INSERT INTO proformas (emisor_nombre, emisor_ruc, cliente_nombre, cliente_ruc, fecha, validez, subtotal, igv, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     db.run(query, [emisor, emisorRuc, cliente, clienteId, fecha, validez, subtotal, igv, total], function(err) {
         if (err) {
@@ -47,9 +47,7 @@ app.post('/api/proformas', (req, res) => {
     });
 });
 
-// Quítale el "const" al inicio para que use la que ya estaba declarada arriba
-PORT = process.env.PORT || 3000; 
-
+// Arrancar el servidor usando la variable dinámica
 app.listen(PORT, () => {
     console.log(`Servidor ejecutándose profesionalmente en el puerto ${PORT}`);
 });
