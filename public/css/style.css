@@ -182,7 +182,107 @@
         .toast-warning {
             border-left: 4px solid #f59e0b;
         }
-        @media (max-width: 1000px) {
-            .container { grid-template-columns: 1fr; }
-            .header-area { grid-column: span 1; }
-        }
+/* ==========================================================================
+   DISEÑO RESPONSIVO REAL (BENTO + ITEMS RESPONSIVOS)
+   ========================================================================== */
+
+/* Para laptops pequeñas y tablets (Mueve el resumen abajo) */
+@media (max-width: 1024px) {
+    body {
+        padding: 20px 15px;
+    }
+
+    .container {
+        grid-template-columns: 1fr; /* Una sola columna principal */
+        gap: 20px;
+    }
+
+    .header-area {
+        grid-column: span 1;
+    }
+
+    .summary-card {
+        position: relative;
+        top: 0;
+        height: auto;
+    }
+}
+
+/* Para celulares (Corrige el aplastamiento de los inputs de los ítems) */
+@media (max-width: 768px) {
+    .header-area {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .header-area input[type="date"] {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .form-group {
+        grid-template-columns: 1fr; /* Inputs del emisor/cliente uno abajo del otro */
+        gap: 15px;
+    }
+
+    /* RESTRUCTURACIÓN DE LA FILA DE ÍTEMS */
+    .item-row {
+        grid-template-columns: 1fr 1fr; /* Pasamos a 2 columnas */
+        grid-template-areas: 
+            "desc desc"
+            "cant prec"
+            "total total"
+            "delete delete";
+        gap: 12px;
+        padding: 16px;
+    }
+
+    /* Asignamos cada elemento a su nueva posición en el teléfono */
+    .item-desc { 
+        grid-area: desc; 
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .item-qty  { 
+        grid-area: cant; 
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .item-price { 
+        grid-area: prec; 
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .item-total-display { 
+        grid-area: total; 
+        text-align: center !important; /* Centramos el subtotal del ítem */
+        padding: 8px 0;
+        border-top: 1px dashed var(--border);
+        border-bottom: 1px dashed var(--border);
+        margin: 4px 0;
+    }
+
+    /* El botón de eliminar se vuelve un botón ancho abajo */
+    .item-row button[onclick*="remove"] { 
+        grid-area: delete; 
+        text-align: center;
+        background: rgba(239, 68, 68, 0.1) !important;
+        padding: 8px;
+        border-radius: 8px;
+        width: 100%;
+    }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .bento-card {
+        padding: 20px;
+        border-radius: 20px;
+    }
+
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1rem; }
+    .grand-total { font-size: 1.4rem; }
+}
